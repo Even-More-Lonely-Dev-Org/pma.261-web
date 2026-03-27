@@ -1,4 +1,3 @@
-
 const API_BASE_URL = 'http://localhost:8080';
 
 const register = async () => {
@@ -6,7 +5,7 @@ const register = async () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch(`${API_BASE_URL}/accounts`, {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,8 +20,31 @@ const register = async () => {
     }
 };
 
+const login = async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include', // Include cookies for session management
+        body: JSON.stringify({ email, password })
+    });
+
+    if (response.ok) {
+        alert('Login successful!');
+    } else {
+        alert('Failed to login.');
+    }
+};
+
 const loadAccounts = () => {
-    fetch(`${API_BASE_URL}/accounts`)
+    fetch(`${API_BASE_URL}/accounts`, {
+        method: 'GET',
+        credentials: 'include' // Include cookies for session management
+    })
         .then(response => response.json())
         .then(data => {
             const accountList = document.getElementById('accountList');
